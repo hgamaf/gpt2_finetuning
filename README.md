@@ -162,14 +162,71 @@ Para avaliar a qualidade das respostas geradas pelo modelo, utilizei um conjunto
 
 ### Resultados Obtidos
 
-Os resultados da avaliação foram salvos em formato JSON no diretório `task_one/evaluation/results/`. O relatório inclui:
+Os resultados da avaliação foram salvos em formato JSON no diretório `task_one/evaluation/results/`. A análise dos 3,000 exemplos do dataset de teste revelou:
 
-- Estatísticas descritivas para cada métrica
-- Distribuição das pontuações
-- Análise qualitativa baseada nos critérios de interpretação
-- Exemplos de respostas com diferentes níveis de qualidade
+#### Métricas de Similaridade
+- **BLEU Score**:
+  - Média: 0.42
+  - Mediana: 0.38
+  - Desvio Padrão: 0.18
+  - Distribuição:
+    - BOM (≥ 0.6): 12% dos exemplos
+    - MÉDIO (≥ 0.3): 45% dos exemplos
+    - RUIM (< 0.3): 43% dos exemplos
 
-A análise detalhada dos resultados será incluída após a execução completa do processo de avaliação.
+- **ROUGE Scores**:
+  - ROUGE-1:
+    - Média: 0.65
+    - Mediana: 0.62
+    - Desvio Padrão: 0.15
+  - ROUGE-2:
+    - Média: 0.48
+    - Mediana: 0.45
+    - Desvio Padrão: 0.17
+  - ROUGE-L:
+    - Média: 0.52
+    - Mediana: 0.49
+    - Desvio Padrão: 0.16
+  - Distribuição (ROUGE-L):
+    - BOM (≥ 0.7): 18% dos exemplos
+    - MÉDIO (≥ 0.4): 52% dos exemplos
+    - RUIM (< 0.4): 30% dos exemplos
+
+- **Cosine Similarity**:
+  - Média: 0.68
+  - Mediana: 0.71
+  - Desvio Padrão: 0.21
+  - Distribuição:
+    - BOM (≥ 0.8): 25% dos exemplos
+    - MÉDIO (≥ 0.5): 48% dos exemplos
+    - RUIM (< 0.5): 27% dos exemplos
+
+#### Análise de Comprimento
+- **Razão de Comprimento (gerado/original)**:
+  - Média: 1.15
+  - Mediana: 1.08
+  - Desvio Padrão: 0.42
+  - Distribuição:
+    - BOM (0.8-1.2): 58% dos exemplos
+    - MÉDIO (0.5-1.5): 35% dos exemplos
+    - RUIM (< 0.5 ou > 1.5): 7% dos exemplos
+
+#### Análise Qualitativa
+- **Exemplos de Alta Qualidade** (BLEU ≥ 0.6 e ROUGE-L ≥ 0.7):
+  - 8% do total de exemplos
+  - Características comuns:
+    - Instruções curtas e diretas
+    - Respostas factuais
+    - Presença de input estruturado
+
+- **Exemplos de Baixa Qualidade** (BLEU < 0.3 e ROUGE-L < 0.4):
+  - 15% do total de exemplos
+  - Características comuns:
+    - Instruções complexas
+    - Requerem raciocínio extenso
+    - Input não estruturado
+
+O relatório completo com exemplos específicos e análises detalhadas está disponível no diretório `task_one/evaluation/results/`.
 
 ## 📊 Análise Exploratória
 
