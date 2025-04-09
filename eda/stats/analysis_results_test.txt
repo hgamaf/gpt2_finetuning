@@ -1,0 +1,61 @@
+=== Análise do Dataset Alpaca - test ===
+
+1. Análise de Comprimentos de Texto:
+
+INSTRUCTION:
+mean: 59.41
+median: 57.00
+std: 19.73
+min: 14.00
+max: 189.00
+
+OUTPUT:
+mean: 271.93
+median: 185.50
+std: 274.37
+min: 0.00
+max: 2328.00
+
+INPUT:
+mean: 23.64
+median: 0.00
+std: 59.84
+min: 0.00
+max: 966.00
+
+2. Análise de Inputs:
+total_examples: 3000
+with_input: 1194
+without_input: 1806
+input_percentage: 39.800000000000004
+
+3. Top 5 Verbos nas Instruções:
+generate: 276
+create: 224
+write: 163
+describe: 159
+given: 134
+
+4. Análise de Legibilidade (Flesch Reading Ease):
+mean_score: 53.29
+median_score: 55.24
+std_score: 24.97
+min_score: -64.57
+max_score: 118.18
+
+5. Análise de Tópicos (LDA):
+
+Tópico 0:
+Palavras mais importantes: given, generate, list, create, following
+
+Tópico 1:
+Palavras mais importantes: following, sentence, words, given, using
+
+Tópico 2:
+Palavras mais importantes: sentence, following, given, create, make
+
+Tópico 3:
+Palavras mais importantes: write, list, create, given, generate
+
+Tópico 4:
+Palavras mais importantes: explain, example, used, learning, language

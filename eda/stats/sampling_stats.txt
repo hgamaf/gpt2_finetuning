@@ -1,0 +1,38 @@
+=== Estatísticas da Amostragem ===
+
+Dataset Completo:
+Total de exemplos: 52,002
+Exemplos com input: 20,679 (39.8%)
+Exemplos sem input: 31,323 (60.2%)
+
+Dataset de Treino:
+Total de exemplos: 3,000
+Exemplos com input: 1,193 (39.8%)
+Exemplos sem input: 1,807 (60.2%)
+
+Dataset de Teste:
+Total de exemplos: 3,000
+Exemplos com input: 1,194 (39.8%)
+Exemplos sem input: 1,806 (60.2%)
+
+Distribuição por Quartil de Comprimento:
+
+Quartil 1:
+Dataset completo: 13,558 (26.1%)
+Treino: 782 (26.1%)
+Teste: 782 (26.1%)
+
+Quartil 2:
+Dataset completo: 13,339 (25.7%)
+Treino: 769 (25.6%)
+Teste: 769 (25.6%)
+
+Quartil 3:
+Dataset completo: 12,712 (24.4%)
+Treino: 734 (24.5%)
+Teste: 734 (24.5%)
+
+Quartil 4:
+Dataset completo: 12,393 (23.8%)
+Treino: 715 (23.8%)
+Teste: 715 (23.8%)

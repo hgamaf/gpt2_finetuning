@@ -1,0 +1,61 @@
+=== Análise do Dataset Alpaca - train ===
+
+1. Análise de Comprimentos de Texto:
+
+INSTRUCTION:
+mean: 59.54
+median: 57.00
+std: 19.77
+min: 14.00
+max: 165.00
+
+OUTPUT:
+mean: 280.96
+median: 203.00
+std: 295.27
+min: 0.00
+max: 4142.00
+
+INPUT:
+mean: 23.01
+median: 0.00
+std: 57.19
+min: 0.00
+max: 1514.00
+
+2. Análise de Inputs:
+total_examples: 3000
+with_input: 1193
+without_input: 1807
+input_percentage: 39.766666666666666
+
+3. Top 5 Verbos nas Instruções:
+generate: 281
+create: 226
+describe: 173
+write: 156
+what: 134
+
+4. Análise de Legibilidade (Flesch Reading Ease):
+mean_score: 54.41
+median_score: 55.91
+std_score: 24.96
+min_score: -56.11
+max_score: 118.18
+
+5. Análise de Tópicos (LDA):
+
+Tópico 0:
+Palavras mais importantes: explain, word, provide, example, learning
+
+Tópico 1:
+Palavras mais importantes: generate, write, given, story, short
+
+Tópico 2:
+Palavras mais importantes: create, write, given, article, generate
+
+Tópico 3:
+Palavras mais importantes: sentence, given, following, generate, using
+
+Tópico 4:
+Palavras mais importantes: list, following, generate, create, items
