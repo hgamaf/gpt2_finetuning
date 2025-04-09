@@ -70,43 +70,20 @@ uv pip install -r requirements.txt
 
 ## 🔬 Metodologia de Amostragem
 
-A divisão do dataset foi realizada utilizando uma abordagem estratificada para garantir a representatividade das amostras. O processo foi implementado no script `analyze_fulldataset.py` e segue as seguintes etapas:
+O dataset Alpaca original contém aproximadamente 52,000 exemplos. Para garantir uma avaliação robusta do modelo, realizei uma amostragem estratificada considerando dois aspectos principais:
 
-### 1. Preparação dos Dados
-- Carregamento do dataset Alpaca completo (~52,000 exemplos)
-- Criação de colunas auxiliares para estratificação:
-  - `instruction_length`: Comprimento em caracteres de cada instrução
-  - `has_input`: Flag booleana indicando presença de input adicional
-  - `length_cat`: Categorização do comprimento em quartis (Q1, Q2, Q3, Q4)
+1. **Comprimento das Instruções**: Dividi as instruções em quartis para garantir uma distribuição uniforme de exemplos curtos, médios e longos. Isso é crucial porque diferentes comprimentos de instrução podem exigir diferentes capacidades do modelo.
 
-### 2. Estratificação
-A amostragem foi realizada considerando dois critérios principais:
+2. **Presença de Input Adicional**: Estratifiquei também com base na presença ou ausência de input adicional, mantendo a proporção original do dataset. Isso é importante porque exemplos com input adicional geralmente requerem um processamento diferente do modelo.
 
-#### 2.1 Comprimento das Instruções
-- Divisão do dataset em quartis baseado no comprimento das instruções:
-  - Q1: 0-25% (instruções mais curtas)
-  - Q2: 25-50%
-  - Q3: 50-75%
-  - Q4: 75-100% (instruções mais longas)
-- Objetivo: Garantir representatividade de instruções de diferentes tamanhos
+Optei por uma amostra de 3,000 exemplos para treinamento e 3,000 para teste (totalizando 6,000 exemplos, aproximadamente 11.5% do dataset original) por algumas razões:
 
-#### 2.2 Presença de Input
-- Estratificação baseada na presença/ausência de input adicional:
-  - ~40% dos exemplos com input
-  - ~60% dos exemplos sem input
-- Objetivo: Manter a proporção original do dataset
+- O dataset Alpaca contém uma grande variedade de tipos de instruções (perguntas factuais, solicitações criativas, tarefas de raciocínio, etc.)
+- Se eu usasse amostragem aleatória simples, correria o risco de ter sub-representação ou sobre-representação de certos tipos de instruções
+- Isso poderia levar a avaliações enviesadas do desempenho do modelo
+- Com a estratificação, garanto que o modelo será testado em uma amostra representativa de todos os tipos de instruções
 
-### 3. Implementação Técnica
-- Utilização do `train_test_split` do scikit-learn com:
-  - `test_size=3000`
-  - `train_size=3000`
-  - `random_state=42` (para reprodutibilidade)
-  - `stratify=[length_cat, has_input]` (estratificação múltipla)
-
-### 4. Validação da Amostragem
-- Verificação das proporções em cada quartil
-- Confirmação da distribuição de exemplos com/sem input
-- Análise estatística comparativa entre dataset original e amostras
+A implementação técnica foi feita usando o `train_test_split` do scikit-learn, aplicando a estratificação nas características mencionadas. Isso garante que tanto o conjunto de treinamento quanto o de teste mantenham as mesmas proporções do dataset original em relação a essas características.
 
 ## 🤖 Execução do Modelo
 
@@ -141,6 +118,58 @@ O processo de geração de respostas foi implementado no script `task_one/run_in
 - Evitar perda de dados em caso de interrupção
 - Permitir monitoramento do progresso
 - Facilitar a retomada do processo se necessário
+
+## 📈 Avaliação dos Resultados
+
+Para avaliar a qualidade das respostas geradas pelo modelo, utilizei um conjunto abrangente de métricas implementadas no script `task_one/evaluation/evaluate_responses.py`. A avaliação foi realizada comparando as respostas geradas com as respostas originais do dataset Alpaca.
+
+### Métricas Utilizadas
+
+1. **BLEU Score**
+   - Mede a similaridade entre a resposta gerada e a resposta original
+   - Pontuação de 0 a 1, onde valores mais altos indicam maior similaridade
+   - Interpretação:
+     - BOM (≥ 0.6): Alta similaridade com a resposta original
+     - MÉDIO (≥ 0.3): Similaridade moderada
+     - RUIM (< 0.3): Baixa similaridade
+
+2. **ROUGE Scores**
+   - Avalia a sobreposição de palavras e sequências entre as respostas
+   - Métricas calculadas:
+     - ROUGE-1: Sobreposição de palavras únicas
+     - ROUGE-2: Sobreposição de pares de palavras
+     - ROUGE-L: Sobreposição de sequências mais longas
+   - Interpretação:
+     - BOM (≥ 0.7): Alta sobreposição
+     - MÉDIO (≥ 0.4): Sobreposição moderada
+     - RUIM (< 0.4): Baixa sobreposição
+
+3. **Cosine Similarity**
+   - Mede a similaridade semântica entre os embeddings das respostas
+   - Utiliza o modelo de embeddings do spaCy para representação vetorial
+   - Interpretação:
+     - BOM (≥ 0.8): Alta similaridade semântica
+     - MÉDIO (≥ 0.5): Similaridade moderada
+     - RUIM (< 0.5): Baixa similaridade
+
+4. **Análise de Comprimento**
+   - Compara o comprimento das respostas geradas com as originais
+   - Calcula a razão entre comprimentos (gerado/original)
+   - Interpretação:
+     - BOM (0.8-1.2): Comprimento similar ao original
+     - MÉDIO (0.5-1.5): Comprimento moderadamente diferente
+     - RUIM (< 0.5 ou > 1.5): Comprimento muito diferente
+
+### Resultados Obtidos
+
+Os resultados da avaliação foram salvos em formato JSON no diretório `task_one/evaluation/results/`. O relatório inclui:
+
+- Estatísticas descritivas para cada métrica
+- Distribuição das pontuações
+- Análise qualitativa baseada nos critérios de interpretação
+- Exemplos de respostas com diferentes níveis de qualidade
+
+A análise detalhada dos resultados será incluída após a execução completa do processo de avaliação.
 
 ## 📊 Análise Exploratória
 
