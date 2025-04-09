@@ -70,27 +70,77 @@ uv pip install -r requirements.txt
 
 ## 🔬 Metodologia de Amostragem
 
-A divisão do dataset foi realizada utilizando uma abordagem estratificada para garantir a representatividade das amostras. Os critérios de estratificação foram:
+A divisão do dataset foi realizada utilizando uma abordagem estratificada para garantir a representatividade das amostras. O processo foi implementado no script `analyze_fulldataset.py` e segue as seguintes etapas:
 
-1. **Comprimento das Instruções**:
-   - Divisão em quartis (Q1, Q2, Q3, Q4)
-   - Garante distribuição uniforme de instruções curtas e longas
-   - Preserva a variabilidade natural do dataset
+### 1. Preparação dos Dados
+- Carregamento do dataset Alpaca completo (~52,000 exemplos)
+- Criação de colunas auxiliares para estratificação:
+  - `instruction_length`: Comprimento em caracteres de cada instrução
+  - `has_input`: Flag booleana indicando presença de input adicional
+  - `length_cat`: Categorização do comprimento em quartis (Q1, Q2, Q3, Q4)
 
-2. **Presença de Input Adicional**:
-   - Estratificação baseada na presença/ausência de input
-   - Mantém a proporção original (~40% com input, ~60% sem input)
-   - Garante representatividade de ambos os tipos de exemplos
+### 2. Estratificação
+A amostragem foi realizada considerando dois critérios principais:
 
-3. **Tamanho das Amostras**:
-   - 3,000 exemplos para treino
-   - 3,000 exemplos para teste
-   - Total de 6,000 exemplos (~11.5% do dataset original)
+#### 2.1 Comprimento das Instruções
+- Divisão do dataset em quartis baseado no comprimento das instruções:
+  - Q1: 0-25% (instruções mais curtas)
+  - Q2: 25-50%
+  - Q3: 50-75%
+  - Q4: 75-100% (instruções mais longas)
+- Objetivo: Garantir representatividade de instruções de diferentes tamanhos
 
-4. **Implementação Técnica**:
-   - Utilização do `train_test_split` do scikit-learn
-   - Estratificação baseada em múltiplas características
-   - Semente aleatória fixa (random_state=42) para reprodutibilidade
+#### 2.2 Presença de Input
+- Estratificação baseada na presença/ausência de input adicional:
+  - ~40% dos exemplos com input
+  - ~60% dos exemplos sem input
+- Objetivo: Manter a proporção original do dataset
+
+### 3. Implementação Técnica
+- Utilização do `train_test_split` do scikit-learn com:
+  - `test_size=3000`
+  - `train_size=3000`
+  - `random_state=42` (para reprodutibilidade)
+  - `stratify=[length_cat, has_input]` (estratificação múltipla)
+
+### 4. Validação da Amostragem
+- Verificação das proporções em cada quartil
+- Confirmação da distribuição de exemplos com/sem input
+- Análise estatística comparativa entre dataset original e amostras
+
+## 🤖 Execução do Modelo
+
+O processo de geração de respostas foi implementado no script `task_one/run_instructions.py` e segue as seguintes etapas:
+
+### 1. Configuração do Modelo
+- Utilização do modelo GPT-2 small (ComCom/gpt2-small)
+- Configuração do pipeline de geração de texto com:
+  - `max_length=200` (limite de tokens por resposta)
+  - `temperature=0.7` (controle de criatividade)
+  - `top_p=0.9` (nucleus sampling)
+  - `truncation=True` (truncamento explícito)
+  - Suporte automático para GPU quando disponível
+
+### 2. Processamento das Instruções
+- Carregamento do dataset de teste (3,000 exemplos)
+- Geração de resposta para cada instrução
+- Armazenamento dos resultados em formato estruturado:
+  - Instrução original
+  - Input (quando presente)
+  - Output original
+  - Output gerado
+  - Índice do exemplo
+
+### 3. Salvamento dos Resultados
+- Criação de diretório `results` para armazenamento
+- Salvamento parcial a cada 100 exemplos (medida de segurança)
+- Geração de arquivo final com timestamp
+- Formato JSON com indentação para legibilidade
+
+**OBS**: O salvamento parcial a cada 100 exemplos foi implementado como medida de segurança para:
+- Evitar perda de dados em caso de interrupção
+- Permitir monitoramento do progresso
+- Facilitar a retomada do processo se necessário
 
 ## 📊 Análise Exploratória
 

@@ -8,3 +8,45 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Arquivos de dados e resultados
+*.json
+*.parquet
+*.csv
+
+# Diretórios de resultados
+results/
+evaluation_results/
+stats/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDEs e editores
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
